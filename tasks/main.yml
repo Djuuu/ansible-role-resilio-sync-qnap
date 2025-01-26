@@ -1,0 +1,48 @@
+---
+
+# Check if installed
+- name: Check if installed
+  ansible.builtin.include_tasks: _1-check-installed.yml
+
+# Check installed version
+- name: Check installed version
+  ansible.builtin.include_tasks: _2-check-current-version.yml
+  when: resilio_installed
+
+- name: Register empty version
+  ansible.builtin.set_fact:
+    resilio_current_version: ''
+  when: not resilio_installed
+
+# TODO: get version from web (currently hardcoded in vars/main.yml)
+# # Get Resilio Sync available version
+# - name: Get available Resilio Sync version from download page
+#   ansible.builtin.include_tasks: _3-get-current-release.yml
+
+# Compare versions
+- name: Compare versions
+  ansible.builtin.debug:
+    msg: "Version {{ resilio_current_version }} ✔️ Up to date"
+  when: resilio_current_version == resilio_download_version
+
+# Download & install new version
+- name: Download & install new version
+  when: resilio_current_version != resilio_download_version
+  block:
+    - name: Show install target
+      ansible.builtin.debug:
+        msg:
+          - "New version:  {{ resilio_current_version }}  -->  {{ resilio_download_version }}"
+
+    # Download new release
+    - name: Download new release
+      ansible.builtin.include_tasks: _4-download-current-release.yml
+
+    # Install downloaded release
+    - name: Install downloaded release
+      ansible.builtin.include_tasks: _5-install_qpkg.yml
+
+- name: Start Resilio Sync
+  ansible.builtin.command: "qpkg_cli --start ResilioSync"
+  changed_when: true
+  become: true

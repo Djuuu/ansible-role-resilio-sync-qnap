@@ -1,0 +1,20 @@
+---
+
+- name: Get Resilio Sync version
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      /share/CACHEDEV1_DATA/.qpkg/ResilioSync/rslsync --help \
+      | grep '^Resilio Sync' \
+      | cut -d ' ' -f 3
+    executable: /bin/bash
+  register: rslsync_help
+  changed_when: false
+
+- name: Register Resilio Sync version
+  ansible.builtin.set_fact:
+    resilio_current_version: "{{ rslsync_help.stdout }}"
+
+- name: Show Resilio Sync version
+  ansible.builtin.debug:
+    msg: "Current version: {{ resilio_current_version }}"

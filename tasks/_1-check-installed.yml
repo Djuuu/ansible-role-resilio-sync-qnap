@@ -1,0 +1,14 @@
+---
+
+- name: Get Resilio Sync install status
+  ansible.builtin.command: qpkg_cli --status ResilioSync
+  register: resilio_status
+  changed_when: false
+
+- name: Show Resilio Sync install status
+  ansible.builtin.debug:
+    msg: "{{ resilio_status.stdout }}"
+
+- name: Register Resilio Sync install status
+  ansible.builtin.set_fact:
+    resilio_installed: "{{ 'QPKG ResilioSync is installed' in resilio_status.stdout }}"

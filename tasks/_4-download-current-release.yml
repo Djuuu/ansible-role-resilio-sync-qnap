@@ -1,0 +1,14 @@
+---
+
+- name: Check download directory is writeable
+  ansible.builtin.stat:
+    path: "{{ resilio_downoad_dir }}"
+  register: dir_st
+  failed_when: not dir_st.stat.writeable or not (dir_st.stat.isdir or dir_st.stat.islnk)
+
+- name: Download latest Resilio Sync release
+  ansible.builtin.get_url:
+    url: "{{ resilio_download_url }}"
+    dest: "{{ resilio_downoad_dir }}"
+    mode: '0644'
+  register: resilio_download

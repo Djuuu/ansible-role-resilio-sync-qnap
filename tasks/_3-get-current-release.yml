@@ -1,8 +1,8 @@
 ---
 
-- name: Get Resilio Sync update feed
-#  ansible.builtin.uri:
-#    url: "{{ resilio_download_page }}"
+# - name: Get Resilio Sync update feed
+#   ansible.builtin.uri:
+#     url: "{{ resilio_download_page }}"
 
 #  ansible.builtin.command: "curl {{ resilio_download_page }}"
 #  register: dl_page

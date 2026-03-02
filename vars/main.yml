@@ -2,8 +2,8 @@
 
 resilio_download_page: https://help.resilio.com/hc/en-us/articles/206178964-QNAP
 
-resilio_download_version: 3.0.2
-resilio_download_build: 1058
+resilio_download_version: 3.1.2
+resilio_download_build: 1076
 
 resilio_arch_dir_mapping:
   x86_64:  x86_64
@@ -19,12 +19,12 @@ resilio_arch_file_mapping:
   arm:     arm_64
   aarch64: arm_64
 
-resilio_download_url: "https://download-cdn.resilio.com/stable/qnap/{{
-      resilio_arch_dir_mapping[ansible_facts['architecture']]
-    }}/0/ResilioSync_{{
+resilio_download_url: "https://download-cdn.resilio.com/{{
       resilio_download_version
     }}.{{
       resilio_download_build
-    }}_{{
+    }}/qnap/{{
+      resilio_arch_dir_mapping[ansible_facts['architecture']]
+    }}/0/resilio-sync-{{
       resilio_arch_file_mapping[ansible_facts['architecture']]
     }}.qpkg"
